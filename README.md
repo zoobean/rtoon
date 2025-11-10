@@ -2,6 +2,7 @@
 
 [![Ruby](https://img.shields.io/badge/ruby-%3E%3D%202.7-red.svg)](https://www.ruby-lang.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)
+[![Gem Version](https://badge.fury.io/rb/rtoon.svg)](https://badge.fury.io/rb/rtoon)
 
 A Ruby gem for parsing and encoding **Token Object Oriented Notation (TOON)** — a tabular, schema-based data format with indentation-based structure.
 
