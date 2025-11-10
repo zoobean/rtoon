@@ -1,17 +1,3 @@
-# TOON Parser - Token Object Oriented Notation
-
-A Ruby gem for parsing Token Object Oriented Notation (TOON), a tabular, schema-based data format with indentation-based structure.
-
-## What is TOON?
-
-TOON is a data serialization format that combines:
-- **Schema declarations** with field definitions
-- **Tabular data** for compact representation
-- **Indentation-based nesting** for hierarchy
-- **Array size hints** for structure clarity
-
-### Example
-
 # RTOON - Token Object Oriented Notation Parser
 
 [![Ruby](https://img.shields.io/badge/ruby-%3E%3D%202.7-red.svg)](https://www.ruby-lang.org/)
