@@ -5,6 +5,8 @@
 
 A Ruby gem for parsing and encoding **Token Object Oriented Notation (TOON)** — a tabular, schema-based data format with indentation-based structure.
 
+Inspired by [toon-format/toon](https://github.com/toon-format/toon) which is written in TypeScript and for TypeScript projects.
+
 ## What is TOON?
 
 TOON is a human-readable data serialization format designed for structured tabular data. It combines the clarity of CSV with the flexibility of JSON, using indentation to express hierarchy.
@@ -420,41 +422,6 @@ ARCHITECTURE.md               # Detailed architecture documentation
 ```
 
 👉 **Read [ARCHITECTURE.md](ARCHITECTURE.md) for implementation details.**
-
-## Use Cases
-
-TOON is perfect for scenarios where you need readable, structured data:
-
-- 📝 **Configuration files** - Structured configs with tabular data
-- 🌱 **Database seeds** - Define schemas and initial data
-- 🔌 **API responses** - Alternative to JSON for tabular data
-- 📤 **Data exports** - Human-readable data dumps
-- 🧪 **Test fixtures** - Clear, maintainable test data
-- 📊 **Data pipelines** - Intermediate data format
-- 📋 **Documentation** - Embed structured data in docs
-
-## Real-World Example
-
-```ruby
-# config/database.toon
-database[1]{name,tables,version}:
-  name: myapp_production
-  tables[3]{name,records,indexed}:
-    users,15000,yes
-    posts,80000,yes
-    comments,250000,no
-  version: 2
-```
-
-```ruby
-# Load and use
-config = Rtoon.parse(File.read('config/database.toon'))
-db = config['database'][0]
-puts "Database: #{db['name']} (v#{db['version']})"
-db['tables'].each do |table|
-  puts "  - #{table['name']}: #{table['records']} records"
-end
-```
 
 ## Limitations & Considerations
 
