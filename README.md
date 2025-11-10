@@ -96,8 +96,6 @@ toon = Rtoon.encode(data)
 # => "users[1]{id,name}:\n  1,Ada\n"
 ```
 
-👉 **See [QUICKSTART.md](QUICKSTART.md) for detailed examples and patterns.**
-
 ## Usage Examples
 
 ### Basic Parsing
@@ -435,7 +433,6 @@ test/
 └── toon_test.rb              # Test suite
 
 ARCHITECTURE.md               # Detailed architecture documentation
-TOON_SPEC.md                  # Format specification
 QUICKSTART.md                 # Getting started guide
 ```
 
@@ -538,7 +535,6 @@ ruby -e "require './lib/rtoon'; p Rtoon.parse(File.read('your_file.toon'))"
 
 - **[QUICKSTART.md](QUICKSTART.md)** - Quick start guide with examples
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Implementation details
-- **[TOON_SPEC.md](TOON_SPEC.md)** - Format specification
 - **[README.md](README.md)** - This file
 
 ## License
