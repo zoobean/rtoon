@@ -169,4 +169,48 @@ class RtoonTest < Minitest::Test
     assert_equal "4", result["database"][0]["tables"][0]["columns"]
     assert_equal "2", result["database"][0]["version"]
   end
+
+
+  def test_encoder_simple_schema_with_data
+    hash = {
+      "users" => [
+        {"id" => "1", "name" => "Ada"},
+        {"id" => "2", "name" => "Bob"}
+      ]
+    }
+
+    expected_toon = <<~TOON
+      users[2]{id,name}:
+        1,Ada
+        2,Bob
+    TOON
+
+    encoded = Rtoon::Encoder.encode(hash)
+    assert_equal expected_toon, encoded
+  end
+
+  def test_complex_encoding_nested_schemas
+    hash = {
+      "items" => [
+        {
+          "users" => [
+            {"id" => "1", "name" => "Ada"},
+            {"id" => "2", "name" => "Bob"}
+          ],
+          "status" => "active"
+        }
+      ]
+    }
+
+    expected_toon = <<~TOON
+      items[1]{users,status}:
+        users[2]{id,name}:
+          1,Ada
+          2,Bob
+        status: active
+    TOON
+
+    encoded = Rtoon::Encoder.encode(hash)
+    assert_equal expected_toon, encoded
+  end
 end
