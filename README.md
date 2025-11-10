@@ -433,7 +433,6 @@ test/
 └── toon_test.rb              # Test suite
 
 ARCHITECTURE.md               # Detailed architecture documentation
-QUICKSTART.md                 # Getting started guide
 ```
 
 👉 **Read [ARCHITECTURE.md](ARCHITECTURE.md) for implementation details.**
@@ -533,7 +532,6 @@ ruby -e "require './lib/rtoon'; p Rtoon.parse(File.read('your_file.toon'))"
 
 ## Documentation
 
-- **[QUICKSTART.md](QUICKSTART.md)** - Quick start guide with examples
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - Implementation details
 - **[README.md](README.md)** - This file
 
