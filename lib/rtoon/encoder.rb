@@ -1,71 +1,69 @@
+# lib/rtoon/encoder.rb
 module Rtoon
   class Encoder
-    def self.encode(hash, indent_level = 0)
-      return "" if hash.nil? || hash.empty?
+    def self.encode(value, indent: 0, key: nil, top_level: true)
+      case value
+      when Hash
+        encode_hash(value, indent: indent, key: key, top_level: top_level)
+      when Array
+        encode_array(value, indent: indent, key: key, top_level: top_level)
+      else
+        "#{value}"
+      end
+    end
 
-      result = []
-      indent_str = "  " * indent_level
+    def self.encode_hash(hash, indent:, key:, top_level:)
+      lines = []
+      if key
+        subkeys = hash.keys
+        lines << ("  " * indent + "#{key}{#{subkeys.join(',')}}:")
+        indent += 1
+      end
 
-      hash.each do |key, value|
-        if value.is_a?(Array) && value.all? { |v| v.is_a?(Hash) }
-          # Array of hashes - encode as schema with rows
-          fields = extract_fields(value)
-          result << "#{indent_str}#{key}[#{value.length}]{#{fields.join(',')}}:"
-
-          value.each do |row|
-            row_values = fields.map { |field| format_value(row[field]) }
-            result << "#{indent_str}  #{row_values.join(',')}"
-          end
-        elsif value.is_a?(Hash) && has_complex_values?(value)
-          # Hash with complex values (nested hashes/arrays) - use schema format
-          fields = value.keys
-          result << "#{indent_str}#{key}[1]{#{fields.join(',')}}:"
-
-          value.each do |nested_key, nested_value|
-            if nested_value.is_a?(Array) || nested_value.is_a?(Hash)
-              # Recursively encode complex nested values
-              result << encode({nested_key => nested_value}, indent_level + 1).rstrip
-            else
-              # Simple field assignment
-              result << "#{indent_str}  #{nested_key}: #{format_value(nested_value)}"
-            end
-          end
-        elsif value.is_a?(Hash)
-          # Hash with only simple values - use field assignments without schema
-          result << "#{indent_str}#{key}:"
-          value.each do |nested_key, nested_value|
-            result << "#{indent_str}  #{nested_key}: #{format_value(nested_value)}"
-          end
+      hash.each do |k, v|
+        if v.is_a?(Hash)
+          lines << encode_hash(v, indent: indent, key: k, top_level: false)
+        elsif v.is_a?(Array)
+          lines << encode_array(v, indent: indent, key: k, top_level: false)
         else
-          # Simple key-value pair
-          result << "#{indent_str}#{key}: #{format_value(value)}"
+          lines << ("  " * indent + "#{k}: #{v}")
         end
       end
 
-      result.join("\n") + "\n"
+      lines.join("\n") + (top_level ? "\n" : "")
     end
 
-    private
+    def self.encode_array(array, indent:, key:, top_level:)
+      return "" if array.empty?
 
-    def self.extract_fields(array_of_hashes)
-      # Get all unique keys from the array of hashes, preserving order from first object
-      return [] if array_of_hashes.empty?
-
-      first_keys = array_of_hashes.first.keys
-      all_keys = array_of_hashes.flat_map(&:keys).uniq
-
-      # Prioritize keys from first object, then add any others
-      (first_keys + (all_keys - first_keys))
-    end
-
-    def self.has_complex_values?(hash)
-      hash.values.any? { |v| v.is_a?(Hash) || v.is_a?(Array) }
-    end
-
-    def self.format_value(value)
-      return "" if value.nil?
-      # Keep values as-is - no string manipulation
-      value.to_s
+      # Check if it's an array of hashes that themselves contain nested structures
+      if array.first.is_a?(Hash)
+        # If all elements are flat hashes (no arrays inside), compress to CSV form
+        if array.all? { |h| h.values.all? { |v| !v.is_a?(Array) && !v.is_a?(Hash) } }
+          element_keys = array.first.keys
+          lines = []
+          lines << ("  " * indent + "#{key}[#{array.size}]{#{element_keys.join(',')}}:")
+          array.each do |element|
+            row = element.values.join(',')
+            lines << ("  " * (indent + 1) + row)
+          end
+          return lines.join("\n")
+        else
+          # Otherwise, treat each element recursively
+          lines = []
+          lines << ("  " * indent + "#{key}[#{array.size}]{#{array.first.keys.join(',')}}:")
+          array.each do |element|
+            lines << encode_hash(element, indent: indent + 1, key: nil, top_level: false)
+          end
+          return lines.join("\n")
+        end
+      else
+        # Array of primitives
+        lines = []
+        lines << ("  " * indent + "#{key}[#{array.size}]:")
+        array.each { |v| lines << ("  " * (indent + 1) + v.to_s) }
+        lines.join("\n")
+      end
     end
   end
 end
