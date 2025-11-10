@@ -114,13 +114,22 @@ module Toon
 
     def scan_number
       start = @pos
+      # Scan digits
       @pos += 1 while @pos < @current_line.length && @current_line[@pos].match?(/[0-9]/)
+
+      # Check for decimal point
+      if @pos < @current_line.length && @current_line[@pos] == '.'
+        @pos += 1
+        # Scan fractional part
+        @pos += 1 while @pos < @current_line.length && @current_line[@pos].match?(/[0-9]/)
+      end
+
       @current_line[start...@pos]
     end
 
     def scan_identifier
       start = @pos
-      @pos += 1 while @pos < @current_line.length && @current_line[@pos].match?(/[a-zA-Z0-9_]/)
+      @pos += 1 while @pos < @current_line.length && @current_line[@pos].match?(/[a-zA-Z0-9_.]/)
       @current_line[start...@pos]
     end
   end
