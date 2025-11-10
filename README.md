@@ -42,22 +42,6 @@ items[1]{users,status}:
 }
 ```
 
-This parses to:
-
-```ruby
-{
-  "items" => [
-    {
-      "users" => [
-        { "id" => "1", "name" => "Ada" },
-        { "id" => "2", "name" => "Bob" }
-      ],
-      "status" => "active"
-    }
-  ]
-}
-```
-
 ## Installation
 
 **Via RubyGems:**
@@ -292,15 +276,15 @@ end
 
 ## Features
 
-✅ **Schema-based declarations** - Define structure with field names
-✅ **Tabular data rows** - Compact CSV-like data representation
-✅ **Indentation-based nesting** - Clear hierarchical structure
-✅ **Array size hints** - Optional size documentation
-✅ **Field assignments** - Simple key-value pairs
-✅ **Multi-level nesting** - Unlimited depth support
-✅ **Round-trip encoding** - Parse and encode seamlessly
-✅ **Pure Ruby** - No external dependencies
-✅ **Empty line handling** - Flexible formatting
+- ✅ **Schema-based declarations** - Define structure with field names
+- ✅ **Tabular data rows** - Compact CSV-like data representation
+- ✅ **Indentation-based nesting** - Clear hierarchical structure
+- ✅ **Array size hints** - Optional size documentation
+- ✅ **Field assignments** - Simple key-value pairs
+- ✅ **Multi-level nesting** - Unlimited depth support
+- ✅ **Round-trip encoding** - Parse and encode seamlessly
+- ✅ **Pure Ruby** - No external dependencies
+- ✅ **Empty line handling** - Flexible formatting
 
 ## Grammar & Parsing
 
