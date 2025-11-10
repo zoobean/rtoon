@@ -3,56 +3,32 @@ module Toon
     def self.encode(hash, indent_level = 0)
       return "" if hash.nil? || hash.empty?
 
-      lines = []
-      indent = "  " * indent_level
+      result = []
+      indent_str = "  " * indent_level
 
       hash.each do |key, value|
-        case value
-        when Array
-          if value.empty?
-            lines << "#{indent}#{key}[0]{}:"
-          elsif value.first.is_a?(Hash)
-            # Array of objects - use schema format
-            fields = extract_fields(value)
-            lines << "#{indent}#{key}[#{value.size}]{#{fields.join(',')}}:"
+        if value.is_a?(Array) && value.all? { |v| v.is_a?(Hash) }
+          # Array of hashes - encode as schema with rows
+          fields = extract_fields(value)
+          result << "#{indent_str}#{key}[#{value.length}]{#{fields.join(',')}}:"
 
-            value.each do |obj|
-              row_values = fields.map { |field| obj[field] || "" }
-              lines << "#{indent}  #{row_values.join(',')}"
-            end
-          else
-            # Array of primitives - treat as simple values
-            lines << "#{indent}#{key}: #{value.join(',')}"
+          value.each do |row|
+            row_values = fields.map { |field| format_value(row[field]) }
+            result << "#{indent_str}  #{row_values.join(',')}"
           end
-
-        when Hash
-          if value.empty?
-            lines << "#{indent}#{key}{}:"
-          else
-            # Check if this hash contains arrays or nested hashes
-            has_complex_values = value.values.any? { |v| v.is_a?(Hash) || v.is_a?(Array) }
-
-            if has_complex_values
-              # Schema block with nested content
-              lines << "#{indent}#{key}[1]{}:"
-              nested = encode(value, indent_level + 1)
-              lines << nested unless nested.empty?
-            else
-              # Simple nested object
-              lines << "#{indent}#{key}{}:"
-              value.each do |k, v|
-                lines << "#{indent}  #{k}: #{v}"
-              end
-            end
+        elsif value.is_a?(Hash)
+          # Nested hash - encode without schema (just field assignments)
+          result << "#{indent_str}#{key}:"
+          value.each do |nested_key, nested_value|
+            result << "#{indent_str}  #{nested_key}: #{format_value(nested_value)}"
           end
-
         else
-          # Simple field assignment
-          lines << "#{indent}#{key}: #{value}"
+          # Simple key-value pair
+          result << "#{indent_str}#{key}: #{format_value(value)}"
         end
       end
 
-      lines.join("\n")
+      result.join("\n") + "\n"
     end
 
     private
@@ -66,6 +42,11 @@ module Toon
 
       # Prioritize keys from first object, then add any others
       (first_keys + (all_keys - first_keys))
+    end
+
+    def self.format_value(value)
+      return "" if value.nil?
+      value.to_s
     end
   end
 end

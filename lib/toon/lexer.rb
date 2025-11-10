@@ -1,5 +1,5 @@
 module Toon
-  class ToonLexer
+  class Lexer
     attr_reader :line_number, :indent_stack
 
     def initialize(input)

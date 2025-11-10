@@ -1,10 +1,11 @@
-require_relative 'toon_parser.tab'
+require_relative 'toon/parser.tab'
+require_relative 'toon/encoder'
 
 module Toon
   VERSION = "0.1.0"
 
   def self.parse(string)
-    parser = ToonParser.new
+    parser = Parser.new
     parser.parse(string)
   end
 

@@ -68,12 +68,12 @@ rule
 end
 
 ---- header
-require_relative 'toon_lexer'
+require_relative 'lexer'
 
 ---- inner
 
 def parse(str)
-  @lexer = ToonLexer.new(str)
+  @lexer = Lexer.new(str)
   do_parse
 end
 

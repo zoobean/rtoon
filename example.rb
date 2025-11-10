@@ -122,4 +122,36 @@ puts "  ✓ Field assignments"
 puts "  ✓ Array size hints"
 puts "  ✓ Mixed content types"
 puts
+
+# Example 7: Round-trip encoding
+puts "7. Round-Trip Encoding (Parse → Encode)"
+puts "-" * 50
+puts "Original data structure:"
+original_data = {
+  "users" => [
+    {"id" => "1", "name" => "Alice", "role" => "admin"},
+    {"id" => "2", "name" => "Bob", "role" => "user"},
+    {"id" => "3", "name" => "Carol", "role" => "user"}
+  ],
+  "config" => {
+    "version" => "1.0",
+    "active" => "true"
+  }
+}
+puts JSON.pretty_generate(original_data)
+puts
+
+puts "Encoded TOON:"
+encoded = Toon.encode(original_data)
+puts encoded
+puts
+
+puts "Re-parsed result:"
+reparsed = Toon.parse(encoded)
+puts JSON.pretty_generate(reparsed)
+puts
+
+puts "Match: #{original_data == reparsed ? '✓' : '✗'}"
+puts
+
 puts "See README.md for complete documentation!"
