@@ -14,6 +14,6 @@ module Rtoon
   end
 
   def self.encode(hash, indent_level = 0)
-    Encoder.encode(hash, indent_level)
+    Encoder.encode(hash, indent: indent_level)
   end
 end

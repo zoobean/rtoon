@@ -1,4 +1,3 @@
-# lib/rtoon/encoder.rb
 module Rtoon
   class Encoder
     def self.encode(value, indent: 0, key: nil, top_level: true)
