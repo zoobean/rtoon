@@ -92,6 +92,8 @@ module Rtoon
         return [:COMMA, ',']
       when '0'..'9'
         return [:NUMBER, scan_number]
+      when '"'
+        return [:IDENTIFIER, scan_quoted_string]
       when 'a'..'z', 'A'..'Z', '_'
         return [:IDENTIFIER, scan_identifier]
       else
@@ -131,6 +133,43 @@ module Rtoon
       start = @pos
       @pos += 1 while @pos < @current_line.length && @current_line[@pos].match?(/[a-zA-Z0-9_.]/)
       @current_line[start...@pos]
+    end
+
+    def scan_quoted_string
+      @pos += 1 # skip opening quote
+      buffer = +""
+
+      while @pos < @current_line.length
+        ch = @current_line[@pos]
+
+        case ch
+        when '"'
+          # closing quote
+          result = buffer
+          @pos += 1
+          return result
+        when '\\'
+          # escape sequence
+          if @pos + 1 < @current_line.length
+            next_char = @current_line[@pos + 1]
+            case next_char
+            when '"', '\\', 'n', 't', 'r'
+              buffer << eval("\"\\#{next_char}\"") # safe, limited set
+              @pos += 2
+            else
+              buffer << '\\' << next_char
+              @pos += 2
+            end
+          else
+            raise "Unterminated escape at line #{@line_number}"
+          end
+        else
+          buffer << ch
+          @pos += 1
+        end
+      end
+
+      raise "Unterminated string at line #{@line_number}"
     end
   end
 end

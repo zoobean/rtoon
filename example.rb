@@ -105,6 +105,14 @@ toon6 = <<~TOON
       sales,2
 TOON
 
+
+puts "TOON Input:"
+puts toon6
+puts "\nParsed Result:"
+result6 = Rtoon.parse(toon6)
+puts JSON.pretty_generate(result6)
+puts
+
 # Example 7: Round-trip encoding
 puts "7. Round-Trip Encoding (Parse → Encode)"
 puts "-" * 50
@@ -137,13 +145,6 @@ puts "Match: #{original_data == reparsed ? '✓' : '✗'}"
 puts
 
 puts "See README.md for complete documentation!"
-
-puts "TOON Input:"
-puts toon6
-puts "\nParsed Result:"
-result6 = Rtoon.parse(toon6)
-puts JSON.pretty_generate(result6)
-puts
 
 puts "=== Demo Complete ==="
 puts
