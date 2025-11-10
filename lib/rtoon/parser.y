@@ -1,6 +1,6 @@
 # TOON Grammar - Tabular, schema-based format
 
-class Toon::Parser
+class Rtoon::Parser
 
 token IDENTIFIER NUMBER
 token LBRACKET RBRACKET LBRACE RBRACE COLON COMMA

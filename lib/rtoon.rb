@@ -1,16 +1,12 @@
-require_relative 'toon/parser.tab'
-require_relative 'toon/encoder'
+require_relative 'rtoon/parser.tab'
+require_relative 'rtoon/encoder'
 
-module Toon
+module Rtoon
   VERSION = "0.1.0"
 
-  def self.parse(string)
+  def self.decode(string)
     parser = Parser.new
     parser.parse(string)
-  end
-
-  def self.decode(string)
-    parse(string)
   end
 
   def self.encode(hash, indent_level = 0)

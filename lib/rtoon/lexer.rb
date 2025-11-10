@@ -1,4 +1,4 @@
-module Toon
+module Rtoon
   class Lexer
     attr_reader :line_number, :indent_stack
 

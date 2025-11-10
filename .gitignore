@@ -57,5 +57,5 @@ Temporary Items
 .idea/
 
 # Parser generated files (if you regenerate from .y files)
-# Uncomment if toon_parser.tab.rb is auto-generated
-lib/toon/parser.tab.rb
+# Uncomment if rtoon.tab.rb is auto-generated
+lib/rtoon/parser.tab.rb

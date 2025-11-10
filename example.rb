@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative 'lib/toon'
+require_relative 'lib/rtoon'
 require 'json'
 
 puts "=== TOON Parser Demo ==="
@@ -19,7 +19,7 @@ TOON
 puts "TOON Input:"
 puts toon1
 puts "\nParsed Result:"
-result1 = Toon.parse(toon1)
+result1 = Rtoon.parse(toon1)
 puts JSON.pretty_generate(result1)
 puts
 
@@ -37,7 +37,7 @@ TOON
 puts "TOON Input:"
 puts toon2
 puts "\nParsed Result:"
-result2 = Toon.parse(toon2)
+result2 = Rtoon.parse(toon2)
 puts JSON.pretty_generate(result2)
 puts
 
@@ -54,7 +54,7 @@ TOON
 puts "TOON Input:"
 puts toon3
 puts "\nParsed Result:"
-result3 = Toon.parse(toon3)
+result3 = Rtoon.parse(toon3)
 puts JSON.pretty_generate(result3)
 puts
 
@@ -71,7 +71,7 @@ TOON
 puts "TOON Input:"
 puts toon4
 puts "\nParsed Result:"
-result4 = Toon.parse(toon4)
+result4 = Rtoon.parse(toon4)
 puts JSON.pretty_generate(result4)
 puts
 
@@ -91,7 +91,7 @@ TOON
 puts "TOON Input:"
 puts toon5
 puts "\nParsed Result:"
-result5 = Toon.parse(toon5)
+result5 = Rtoon.parse(toon5)
 puts JSON.pretty_generate(result5)
 puts
 
@@ -108,7 +108,7 @@ TOON
 puts "TOON Input:"
 puts toon6
 puts "\nParsed Result:"
-result6 = Toon.parse(toon6)
+result6 = Rtoon.parse(toon6)
 puts JSON.pretty_generate(result6)
 puts
 
@@ -142,12 +142,12 @@ puts JSON.pretty_generate(original_data)
 puts
 
 puts "Encoded TOON:"
-encoded = Toon.encode(original_data)
+encoded = Rtoon.encode(original_data)
 puts encoded
 puts
 
 puts "Re-parsed result:"
-reparsed = Toon.parse(encoded)
+reparsed = Rtoon.parse(encoded)
 puts JSON.pretty_generate(reparsed)
 puts
 

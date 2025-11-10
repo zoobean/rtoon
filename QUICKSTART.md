@@ -3,19 +3,19 @@
 ## Installation
 
 ```bash
-gem install toon_parser
+gem install rtoon
 ```
 
 Or add to your Gemfile:
 
 ```ruby
-gem 'toon_parser'
+gem 'rtoon'
 ```
 
 ## Basic Usage
 
 ```ruby
-require 'toon'
+require 'rtoon'
 
 # Your original example!
 toon_string = <<~TOON
@@ -26,7 +26,7 @@ toon_string = <<~TOON
     status: active
 TOON
 
-result = Toon.parse(toon_string)
+result = Rtoon.parse(toon_string)
 
 # Access the data
 result["items"][0]["users"]       # => [{"id"=>"1", "name"=>"Ada"}, ...]
@@ -96,9 +96,9 @@ ruby test/toon_test.rb
 
 ## Key Features
 
-✅ Schema-based declarations  
-✅ Tabular data rows  
-✅ Indentation-based nesting  
-✅ Simple field assignments  
+✅ Schema-based declarations
+✅ Tabular data rows
+✅ Indentation-based nesting
+✅ Simple field assignments
 
 See README.md for complete documentation!

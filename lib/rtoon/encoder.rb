@@ -1,4 +1,4 @@
-module Toon
+module Rtoon
   class Encoder
     def self.encode(hash, indent_level = 0)
       return "" if hash.nil? || hash.empty?

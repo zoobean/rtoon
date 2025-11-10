@@ -41,13 +41,13 @@ This parses to:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'toon_parser'
+gem 'rtoon'
 ```
 
 Or install it yourself:
 
 ```bash
-gem install toon_parser
+gem install rtoon
 ```
 
 ## Usage
@@ -55,7 +55,7 @@ gem install toon_parser
 ### Basic Parsing
 
 ```ruby
-require 'toon'
+require 'rtoon'
 
 toon_string = <<~TOON
   users[2]{id,name}:
@@ -63,7 +63,7 @@ toon_string = <<~TOON
     2,Bob
 TOON
 
-result = Toon.parse(toon_string)
+result = Rtoon.parse(toon_string)
 # => {"users" => [{"id" => "1", "name" => "Ada"}, {"id" => "2", "name" => "Bob"}]}
 ```
 
@@ -157,7 +157,7 @@ Parses to:
 
 ## API Reference
 
-### `Toon.parse(string)`
+### `Rtoon.parse(string)`
 
 Parses a TOON string and returns a Ruby hash/array structure.
 
@@ -168,21 +168,21 @@ Parses a TOON string and returns a Ruby hash/array structure.
 - Hash or Array with parsed data
 
 **Raises:**
-- `ToonParser::ParseError`: If the string contains invalid TOON syntax
+- `RtoonParser::ParseError`: If the string contains invalid TOON syntax
 
-### `Toon.decode(string)`
+### `Rtoon.decode(string)`
 
-Alias for `Toon.parse(string)`.
+Alias for `Rtoon.parse(string)`.
 
 ## Features
 
-✅ Schema-based declarations  
-✅ Tabular data rows  
-✅ Indentation-based nesting  
-✅ Array size hints  
-✅ Field assignments  
-✅ Multi-level nesting  
-✅ Empty line handling  
+✅ Schema-based declarations
+✅ Tabular data rows
+✅ Indentation-based nesting
+✅ Array size hints
+✅ Field assignments
+✅ Multi-level nesting
+✅ Empty line handling
 
 ## Grammar
 
@@ -211,16 +211,16 @@ ruby -e "require 'racc/parser'; puts 'Racc available'"
 
 ```bash
 # Clone or extract the gem
-cd toon_parser
+cd rtoon
 
 # Compile grammar
-racc -o lib/toon_parser.tab.rb lib/toon_parser.y
+racc -o lib/rtoon.tab.rb lib/rtoon.y
 
 # Run tests
 ruby test/toon_test.rb
 
 # Build gem
-gem build toon_parser.gemspec
+gem build rtoon.gemspec
 ```
 
 ### Running Tests
@@ -239,19 +239,20 @@ Expected output:
 ```
 TOON String
     ↓
-ToonLexer (tokenization + indentation tracking)
+RtoonLexer (tokenization + indentation tracking)
     ↓
-ToonParser (Racc-generated parser)
+RtoonParser (Racc-generated parser)
     ↓
 Ruby Hash/Array
 ```
 
 ### Components
 
-- **lib/toon_lexer.rb**: Indentation-aware lexer
-- **lib/toon_parser.y**: Racc grammar definition
-- **lib/toon_parser.tab.rb**: Generated parser (don't edit!)
-- **lib/toon.rb**: Main interface
+- **lib/rtoon/lexer.rb**: Indentation-aware lexer
+- **lib/rtoon/parser.y**: Racc grammar definition
+- **lib/rtoon/parser.tab.rb**: Generated parser (don't edit!)
+- **lib/rtoon/encoder.rb**: TOON encoder (Ruby → TOON)
+- **lib/rtoon.rb**: Main interface
 
 ## Use Cases
 

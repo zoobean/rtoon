@@ -3,7 +3,7 @@ require "rake/testtask"
 
 desc "Compile Racc grammar"
 task :racc do
-  sh "racc -o lib/toon/parser.tab.rb lib/toon/parser.y"
+  sh "racc -o lib/rtoon/parser.tab.rb lib/rtoon/parser.y"
 end
 
 Rake::TestTask.new(:test) do |t|

@@ -9,17 +9,17 @@ The TOON parser is built using Racc (Ruby parser generator) with a custom indent
 ```
 ┌─────────────────────────────────────────────┐
 │           User Code                         │
-│   result = Toon.parse(toon_string)         │
+│   result = Rtoon.parse(toon_string)         │
 └─────────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────────┐
-│      Toon Module (lib/toon.rb)             │
+│      Rtoon Module (lib/rtoon.rb)             │
 │   - parse(string)                           │
 │   - decode(string)                          │
 └─────────────────────────────────────────────┘
                     ↓
 ┌─────────────────────────────────────────────┐
-│   ToonParser (lib/toon_parser.tab.rb)      │
+│   RtoonParser (lib/rtoon.tab.rb)      │
 │   [Racc-generated LALR parser]             │
 │   - Applies grammar rules                   │
 │   - Builds parse tree                       │
@@ -28,7 +28,7 @@ The TOON parser is built using Racc (Ruby parser generator) with a custom indent
                     ↑
                     │ tokens
 ┌─────────────────────────────────────────────┐
-│   ToonLexer (lib/toon_lexer.rb)            │
+│   RtoonLexer (lib/toon_lexer.rb)            │
 │   - Tokenizes input                         │
 │   - Tracks indentation levels               │
 │   - Emits INDENT/DEDENT tokens             │
@@ -40,7 +40,7 @@ The TOON parser is built using Racc (Ruby parser generator) with a custom indent
 └─────────────────────────────────────────────┘
 ```
 
-## Lexer (ToonLexer)
+## Lexer (RtoonLexer)
 
 ### Responsibilities
 1. **Tokenization**: Convert text to tokens (IDENTIFIER, NUMBER, COLON, etc.)
@@ -54,7 +54,7 @@ The TOON parser is built using Racc (Ruby parser generator) with a custom indent
 @indent_stack = [0]  # Stack of indentation levels
 ```
 
-When indentation increases: emit `INDENT`  
+When indentation increases: emit `INDENT`
 When indentation decreases: emit `DEDENT` (possibly multiple)
 
 #### Token Types
@@ -102,7 +102,7 @@ NEWLINE
 DEDENT
 ```
 
-## Parser (ToonParser)
+## Parser (RtoonParser)
 
 ### Grammar Structure
 
@@ -234,7 +234,7 @@ def next_token
   if @pos == 0  # Start of line
     indent = count_leading_spaces()
     current_indent = @indent_stack.last
-    
+
     if indent > current_indent
       @indent_stack.push(indent)
       return [:INDENT, nil]
@@ -254,7 +254,7 @@ def process_statements(statements)
   result = {}
   current_schema = nil
   data_rows = []
-  
+
   statements.each do |stmt|
     case stmt[:type]
     when :schema
@@ -263,22 +263,22 @@ def process_statements(statements)
         result[current_schema[:name]] = build_array_from_rows(current_schema, data_rows)
         data_rows = []
       end
-      
+
       # Process new schema
       current_schema = stmt[:header]
       nested_result = process_statements(stmt[:content])
-      
+
       # Check if schema has data rows or nested schemas
       # ... build appropriate structure
-      
+
     when :field
       result[stmt[:name]] = stmt[:value]
-      
+
     when :data_row
       data_rows << stmt[:values]
     end
   end
-  
+
   result
 end
 ```
@@ -287,24 +287,25 @@ end
 
 ```
 lib/
-├── toon.rb              # Main interface module
-├── toon_lexer.rb        # Indentation-aware lexer
-├── toon_parser.y        # Racc grammar definition
-└── toon_parser.tab.rb   # Generated parser (don't edit!)
+├── rtoon.rb              # Main interface module
+├── rtoon/lexer.rb        # Indentation-aware lexer
+├── rtoon/parser.y        # Racc grammar definition
+├── rtoon/parser.tab.rb   # Generated parser (don't edit!
+└── rtoon/encoder.rb      # TOON encoder (Ruby → TOON)
 ```
 
 ## Build Process
 
 ```
-toon_parser.y (grammar source)
+rtoon.y (grammar source)
       ↓
    [racc compiler]
       ↓
-toon_parser.tab.rb (generated parser)
+rtoon.tab.rb (generated parser)
       ↓
    [gem build]
       ↓
-toon_parser-0.1.0.gem
+rtoon-0.1.0.gem
 ```
 
 ## Performance Considerations
@@ -318,16 +319,16 @@ toon_parser-0.1.0.gem
 
 ### Adding New Token Types
 
-1. Update `ToonLexer#next_token`
+1. Update `RtoonLexer#next_token`
 2. Add token to grammar (`token NEW_TOKEN`)
 3. Add grammar rules using the token
 4. Update semantic actions if needed
 
 ### Adding New Grammar Rules
 
-1. Edit `lib/toon_parser.y`
+1. Edit `lib/rtoon.y`
 2. Add rule with semantic action
-3. Recompile: `racc -o lib/toon_parser.tab.rb lib/toon_parser.y`
+3. Recompile: `racc -o lib/rtoon.tab.rb lib/rtoon.y`
 4. Test thoroughly
 
 ### Example: Adding String Literals
@@ -360,13 +361,13 @@ value
 
 ### Enable Racc Debug Mode
 ```ruby
-parser = ToonParser.new
+parser = RtoonParser.new
 parser.parse(input, true)  # Enable debug output
 ```
 
 ### Check Lexer Output
 ```ruby
-lexer = ToonLexer.new(input)
+lexer = RtoonLexer.new(input)
 while (token = lexer.next_token) != [false, false]
   p token
 end
@@ -375,7 +376,7 @@ end
 ### Inspect Parse Tree
 Add debug output in semantic actions:
 ```ruby
-{ 
+{
   p [:schema_block, val[0], val[3]]  # Debug
   result = { type: :schema, ... }
 }

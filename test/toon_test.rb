@@ -1,16 +1,16 @@
 require "minitest/autorun"
-require_relative "../lib/toon"
+require_relative "../lib/rtoon"
 
-class ToonTest < Minitest::Test
+class RtoonTest < Minitest::Test
   def test_simple_schema_with_data
     input = <<~TOON
       users[2]{id,name}:
         1,Ada
         2,Bob
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 2, result["users"].length
     assert_equal "1", result["users"][0]["id"]
     assert_equal "Ada", result["users"][0]["name"]
@@ -26,9 +26,9 @@ class ToonTest < Minitest::Test
           2,Bob
         status: active
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 1, result["items"].length
     assert_equal 2, result["items"][0]["users"].length
     assert_equal "Ada", result["items"][0]["users"][0]["name"]
@@ -40,9 +40,9 @@ class ToonTest < Minitest::Test
       name: John
       age: 30
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal "John", result["name"]
     assert_equal "30", result["age"]
   end
@@ -52,9 +52,9 @@ class ToonTest < Minitest::Test
       config{host,port}:
         localhost,8080
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 1, result["config"].length
     assert_equal "localhost", result["config"][0]["host"]
     assert_equal "8080", result["config"][0]["port"]
@@ -67,9 +67,9 @@ class ToonTest < Minitest::Test
         2,Gadget,200
         3,Gizmo,300
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 3, result["products"].length
     assert_equal "Widget", result["products"][0]["name"]
     assert_equal "100", result["products"][0]["price"]
@@ -83,9 +83,9 @@ class ToonTest < Minitest::Test
           eng,5
           sales,3
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 1, result["org"].length
     assert_equal 2, result["org"][0]["depts"].length
     assert_equal "eng", result["org"][0]["depts"][0]["name"]
@@ -100,9 +100,9 @@ class ToonTest < Minitest::Test
           2,Bob
         config: production
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 1, result["server"].length
     assert_equal 2, result["server"][0]["users"].length
     assert_equal "Alice", result["server"][0]["users"][0]["name"]
@@ -116,9 +116,9 @@ class ToonTest < Minitest::Test
         rails
         programming
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 3, result["tags"].length
     assert_equal "ruby", result["tags"][0]["name"]
     assert_equal "programming", result["tags"][2]["name"]
@@ -131,9 +131,9 @@ class ToonTest < Minitest::Test
 
         2,Bob
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 2, result["users"].length
     assert_equal "Ada", result["users"][0]["name"]
   end
@@ -144,9 +144,9 @@ class ToonTest < Minitest::Test
         10,100
         20,200
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal "10", result["stats"][0]["count"]
     assert_equal "100", result["stats"][0]["total"]
     assert_equal "200", result["stats"][1]["total"]
@@ -160,9 +160,9 @@ class ToonTest < Minitest::Test
           posts,6
         version: 2
     TOON
-    
-    result = Toon.parse(input)
-    
+
+    result = Rtoon.parse(input)
+
     assert_equal 1, result["database"].length
     assert_equal 2, result["database"][0]["tables"].length
     assert_equal "users", result["database"][0]["tables"][0]["name"]
