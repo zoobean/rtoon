@@ -561,5 +561,3 @@ MIT License - See [LICENSE.txt](LICENSE.txt) for details.
 ---
 
 **Made with ❤️ using Ruby and Racc**
-
-````
