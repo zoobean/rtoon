@@ -14,6 +14,14 @@ Inspired by [toon-format/toon](https://github.com/toon-format/toon) which is wri
 
 TOON is a data serialization format with schema declarations, tabular rows, and indentation-based nesting.
 
+From the original project description:
+
+> Token-Oriented Object Notation is a compact, human-readable serialization format designed for passing structured data to Large Language Models with significantly reduced token usage. It's intended for LLM input as a lossless, drop-in representation of JSON data.
+
+> TOON's sweet spot is uniform arrays of objects – multiple fields per row, same structure across items. It borrows YAML's indentation-based structure for nested objects and CSV's tabular format for uniform data rows, then optimizes both for token efficiency in LLM contexts. For deeply nested or non-uniform data, JSON may be more efficient.
+
+> TOON achieves CSV-like compactness while adding explicit structure that helps LLMs parse and validate data reliably.
+
 **Example:**
 ```toon
 users[2]{id,name}:
