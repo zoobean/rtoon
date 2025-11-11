@@ -1,4 +1,4 @@
-# RTOON - Token Object Oriented Notation Parser
+# RTOON - Ruby Token Object Oriented Notation Parser
 
 [![CI](https://github.com/zoobean/rtoon/actions/workflows/ci.yml/badge.svg)](https://github.com/zoobean/rtoon/actions/workflows/ci.yml)
 [![Ruby](https://img.shields.io/badge/ruby-%3E%3D%202.7-red.svg)](https://www.ruby-lang.org/)
